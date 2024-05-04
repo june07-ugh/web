@@ -1,10 +1,14 @@
 <template>
     <v-card class="d-flex flex-column align-center mx-auto" flat>
         <v-img src="/lego.png" width="256" height="256"></v-img>
-        <v-card-title class="text-h2 font-weight-bold"><span class="font-italic">Everything is special...</span>
+        <v-card-title :class="smAndDown ? 'text-h5' : 'text-h2'" class="font-weight-bold">
+            <span class="font-italic">Everything is special...</span>
             <span class="happy-emojii">⭐👍🏾❤️</span>
         </v-card-title>
-        <v-card-subtitle class="text-wrap text-h5">Browser extension and web app to DISLIKE and DISAPPROVE 😒👎💔</v-card-subtitle>
+        <v-card-subtitle :class="smAndDown ? 'text-body-1' : ''" class="text-wrap text-h5">
+            <span v-if="!smAndDown">Browser extension and web app to </span>
+            <span>DISlike and DISapprove 😒👎💔</span>
+        </v-card-subtitle>
         <v-card-actions class="d-flex flex-column justify-start" width="100%" style="height: 200px; ">
             <v-btn class="px-4" variant="tonal" :color="!store.showInstallButtons ? 'yellow-darken-2' : 'grey-darken-2'" text="Install" size="x-large" rounded="lg" @click="store.showInstallButtons = !store.showInstallButtons" :style="store.showInstallButtons ? 'opacity: 0.5' : ''">
                 <template v-slot:prepend>

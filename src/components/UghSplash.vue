@@ -1,24 +1,24 @@
 <template>
-    <v-card class="d-flex flex-column align-center mx-auto" flat>
-        <v-img src="/lego.png" width="256" height="256"></v-img>
+    <v-card :class="smAndDown ? 'mobile' : ''" class="h-100 d-flex flex-column align-center justify-center mx-auto" flat>
+        <v-img src="/lego.png" width="256" max-height="256"></v-img>
         <v-card-title :class="smAndDown ? 'text-h5' : 'text-h2'" class="font-weight-bold">
-            <span class="font-italic">Everything <span :class="store.showInstallButtons ? 'cross text-red-darken-4' : ''">is </span> special...</span>
-            <span v-if="!store.showInstallButtons" class="emojii">⭐👍🏾❤️</span>
+            <span class="font-italic">Everything <span :class="showInstallButtons ? 'cross text-red-darken-4' : ''">is </span> special...</span>
+            <span v-if="!showInstallButtons" class="emojii">⭐👍🏾❤️</span>
             <span v-else class="emojii">😒👎💔</span>
         </v-card-title>
-        <v-card-subtitle :class="smAndDown ? 'text-body-1' : ''" class="text-wrap text-h5">
+        <v-card-subtitle :class="{ 'text-body-1': smAndDown, animate__headShake: showInstallButtons, 'animate__delay-0': showInstallButtons, 'animate__animated animate__headShake': showInstallButtons }" class="d-flex text-wrap text-h5">
             <span v-if="!smAndDown">The way to </span>
-            <span><span class="font-weight-bold">DIS</span>like and <span class="font-weight-bold">DIS</span>approve everything!</span>
+            <span class="ml-1"><span class="font-weight-bold">DIS</span>like and <span class="font-weight-bold">DIS</span>approve everything!</span>
         </v-card-subtitle>
         <v-card-actions class="d-flex flex-column justify-start" width="100%" style="height: 200px; ">
-            <v-btn class="px-4" variant="tonal" :color="!store.showInstallButtons ? 'yellow-darken-2' : 'grey-darken-2'" text="Install" size="x-large" rounded="lg" @click="store.showInstallButtons = !store.showInstallButtons" :style="store.showInstallButtons ? 'opacity: 0.5' : ''">
+            <v-btn class="px-4" variant="tonal" :color="!showInstallButtons ? 'yellow-darken-2' : 'grey-darken-2'" text="Install" size="x-large" rounded="lg" @click="showInstallButtons = !showInstallButtons" :style="showInstallButtons ? 'opacity: 0.5' : ''">
                 <template v-slot:prepend>
                     <span class="material-symbols-outlined" style="font-size: 24px">
                         download
                     </span>
                 </template>
             </v-btn>
-            <div v-if="store.showInstallButtons" class="d-flex my-2">
+            <div v-if="showInstallButtons" class="d-flex my-2">
                 <div class="d-flex" v-for="method of installMethods">
                     <v-btn variant="tonal" color="yellow-darken-2" :href="method.href" :text="method.text" rounded="lg" class="px-4 mr-2">
                         <template v-slot:prepend>
@@ -31,6 +31,17 @@
     </v-card>
 </template>
 <style scoped>
+.v-card-subtitle {
+    opacity: unset;
+}
+.v-card-subtitle:not(.animate__headShake) {
+    animation: backInUp;
+    animation-duration: 2s;
+}
+.animate__delay-0 {
+    animation-delay: 0s !important;
+}
+
 .emojii {
     word-spacing: 0.5em;
 }
@@ -39,6 +50,7 @@
     position: relative;
     display: inline-block;
 }
+
 .cross::before,
 .cross::after {
     content: '';
@@ -59,12 +71,19 @@
     -webkit-transform: skewY(35deg);
     transform: skewY(35deg);
 }
+
+.mobile .cross::before,
+.mobile .cross::after {
+    top: 50%;
+    border-bottom: 4px solid black;
+}
 </style>
 <script setup>
+import 'animate.css'
+import { ref } from 'vue'
 import { useDisplay } from 'vuetify/lib/framework.mjs'
-import { useAppStore } from "../store/app"
 
-const store = useAppStore()
+const showInstallButtons = ref(false)
 const { smAndDown } = useDisplay()
 const installMethods = [{
     name: 'Chrome', href: 'https://chromewebstore.google.com/detail/jnndolgphmohopnenfacapkadpmpifjb/preview?hl=en&authuser=0', text: 'chrome', icon: '/chrome_32x32.png'

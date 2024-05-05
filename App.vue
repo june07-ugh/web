@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <v-main class="h-100 d-flex justify-center align-center">
-            <v-container>
+        <v-main >
+            <v-container class="h-100 d-flex justify-center align-center">
                 <ugh-splash v-if="!screenCapture" />
                 <ugh-main v-if="screenCapture" :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>

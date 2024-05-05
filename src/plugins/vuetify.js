@@ -16,16 +16,6 @@ import * as directives from 'vuetify/directives'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
-    theme: {
-        themes: {
-            light: {
-                colors: {
-                    primary: '#1B5E20',
-                    secondary: '#5CBBF6',
-                }
-            }
-        }
-    },
     icons: {
         defaultSet: 'md',
         aliases,

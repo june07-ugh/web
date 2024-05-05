@@ -1,6 +1,6 @@
 <template>
     <v-card :class="smAndDown ? 'mobile' : ''" class="h-100 d-flex flex-column align-center justify-center mx-auto" flat>
-        <v-img src="/lego.png" width="256" max-height="256"></v-img>
+        <v-img src="/lego.webp" width="256" max-height="256"></v-img>
         <v-card-title :class="smAndDown ? 'text-h5' : 'text-h2'" class="font-weight-bold">
             <span class="font-italic">Everything <span :class="showInstallButtons ? 'cross text-red-darken-4' : ''">is </span> special...</span>
             <span v-if="!showInstallButtons" class="emojii">⭐👍🏾❤️</span>

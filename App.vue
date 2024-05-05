@@ -1,26 +1,28 @@
 <template>
     <v-app>
-        <v-main >
+        <v-main>
             <v-container class="h-100 d-flex justify-center align-center">
-                <ugh-splash v-if="!screenCapture" />
-                <ugh-main v-if="screenCapture" :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
+                <ugh-install v-if="!screenCapture && route.path === '/install'" @signup="signup" />
+                <ugh-splash v-else-if="!screenCapture" />
+                <ugh-main v-else-if="screenCapture" :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
         </v-main>
     </v-app>
 </template>
 <script setup>
-const { MODE, VITE_APP_EXTENSION_ID } = import.meta.env
-
 import { ref, onMounted, provide, getCurrentInstance } from "vue"
 import cookie from 'cookie'
 
 import UghMain from "./src/components/UghMain.vue"
 import UghSplash from "./src/components/UghSplash.vue"
+import UghInstall from "./src/components/UghInstall.vue"
 
+const { VITE_APP_EXTENSION_ID } = import.meta.env
 const { $keycloak, $api } = getCurrentInstance().appContext.config.globalProperties
 const auth = ref()
 const screenCapture = ref()
 const extensionId = chrome?.runtime?.id || VITE_APP_EXTENSION_ID
+const route = ref({})
 
 async function doAuth() {
     await $keycloak.value.isLoaded
@@ -44,6 +46,13 @@ async function doAuth() {
 const signin = () => $keycloak.value.login({ redirectUri: `${window.location.origin}/dist/index.html` })
 const signup = () => $keycloak.value.login({ redirectUri: `${window.location.origin}`, action: 'register' })
 onMounted(() => {
+    route.value.path = window.location.pathname
+    if (route.value.path === '/signup') {
+        signup()
+    }
+    if (route.value.path === '/signin') {
+        signin()
+    }
 })
 
 doAuth()

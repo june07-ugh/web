@@ -43,10 +43,12 @@ async function doAuth() {
         }
     }
 }
-const signin = () => $keycloak.value.login({ redirectUri: `${window.location.origin}/dist/index.html` })
-const signup = () => $keycloak.value.login({ redirectUri: `${window.location.origin}`, action: 'register' })
+const signin = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || `${window.location.origin}/dist/index.html` })
+const signup = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || `${window.location.origin}`, action: 'register' })
 onMounted(() => {
     route.value.path = window.location.pathname
+    route.value.params = new URLSearchParams(window.location.search)
+
     if (route.value.path === '/signup') {
         signup()
     }

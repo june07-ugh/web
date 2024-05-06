@@ -24,7 +24,7 @@ const screenCapture = ref()
 const extensionId = chrome?.runtime?.id || VITE_APP_EXTENSION_ID
 const route = ref({})
 
-async function doAuth() {
+async function doAuth(redirect) {
     await $keycloak.value.isLoaded
     if ($keycloak.value.isAuthenticated) {
         auth.value = {
@@ -36,6 +36,9 @@ async function doAuth() {
             data: auth.value
         })
         await $api.forumAuth(auth.value)
+        if (redirect) {
+            window.location.href = redirect
+        }
     } else {
         await $api.info()
         auth.value = {
@@ -43,16 +46,19 @@ async function doAuth() {
         }
     }
 }
-const signin = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || `${window.location.origin}/dist/index.html` })
-const signup = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || `${window.location.origin}`, action: 'register' })
+const signin = () => $keycloak.value.login({ redirectUri: `${window.location.origin}?redirect=${route.value.params?.get('redirect')}` || window.location.origin })
+const signup = () => $keycloak.value.login({ redirectUri: `${window.location.origin}?redirect=${route.value.params?.get('redirect')}` || window.location.origin, action: 'register' })
 onMounted(() => {
     route.value.path = window.location.pathname
     route.value.params = new URLSearchParams(window.location.search)
+    const redirect = route.value.params?.get('redirect')
 
-    if (/\/signup/.test(route.value.path)) {
+    if (/forum-ugh\.june07\.com/.test(redirect)) {
+        // needed to set the shared auth cookie for the forum
+        doAuth(redirect)
+    } else if (/\/signup/.test(route.value.path)) {
         signup()
-    }
-    if (/\/signin/.test(route.value.path)) {
+    } else if (/\/signin/.test(route.value.path)) {
         signin()
     }
 })

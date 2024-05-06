@@ -2,7 +2,7 @@
     <v-app>
         <v-main>
             <v-container class="h-100 d-flex justify-center align-center">
-                <ugh-install v-if="!screenCapture && route.path === '/install'" @signup="signup" />
+                <ugh-install v-if="!screenCapture && /\/install/.test(route.path)" />
                 <ugh-splash v-else-if="!screenCapture" />
                 <ugh-main v-else-if="screenCapture" :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
@@ -49,10 +49,10 @@ onMounted(() => {
     route.value.path = window.location.pathname
     route.value.params = new URLSearchParams(window.location.search)
 
-    if (route.value.path === '/signup') {
+    if (/\/signup/.test(route.value.path)) {
         signup()
     }
-    if (route.value.path === '/signin') {
+    if (/\/signin/.test(route.value.path)) {
         signin()
     }
 })

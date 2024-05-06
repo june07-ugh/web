@@ -53,7 +53,9 @@ onMounted(() => {
     route.value.params = new URLSearchParams(window.location.search)
     const redirect = route.value.params?.get('redirect')
 
-    if (/forum-ugh\.june07\.com/.test(redirect)) {
+    if (/\/install/.test(route.value.path)) {
+        doAuth()
+    } else if (/forum-ugh\.june07\.com/.test(redirect)) {
         // needed to set the shared auth cookie for the forum
         doAuth(redirect)
     } else if (/\/signup/.test(route.value.path)) {

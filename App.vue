@@ -55,9 +55,6 @@ onMounted(() => {
 
     if (/\/install/.test(route.value.path)) {
         doAuth()
-    } else if (/forum-ugh\.june07\.com/.test(redirect)) {
-        // needed to set the shared auth cookie for the forum
-        doAuth(redirect)
     } else if (/\/signup/.test(route.value.path)) {
         signup()
     } else if (/\/signin/.test(route.value.path)) {

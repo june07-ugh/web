@@ -55,8 +55,9 @@
 #tui-image-editor {
     border-radius: 24px;
 }
+
 :deep() .v-field__outline__start {
-   flex: 0 0 29px !important;
+    flex: 0 0 29px !important;
 }
 </style>
 <script setup>
@@ -76,7 +77,7 @@ const { smAndDown } = useDisplay()
 const styleObj = computed(() => ({
     maxWidth: smAndDown ? '100%' : '1080px',
     minWidth: smAndDown ? '100%' : '720px',
-    height: `${props.screenCapture?.height + 150 || 1080}px`,
+    height: `${props.screenCapture?.height + 150 || 500}px`,
     width: `${props.screenCapture?.width + 100 || 1080}px`,
 }))
 const formRef = ref()
@@ -183,9 +184,69 @@ function updateLoadedScreenCapture() {
 function removeURLParams() {
     form.value.url = form.value.url.split('?')[0]
 }
+async function getImagesFromIndexedDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('ughDb')
+
+        request.onerror = () => {
+            reject(new Error('Failed to open IndexedDB.'))
+        }
+
+        request.onsuccess = () => {
+            const db = request.result
+            const transaction = db.transaction(['images'], 'readonly')
+            const objectStore = transaction.objectStore('images')
+            const images = []
+
+            transaction.oncomplete = () => {
+                resolve(images)
+            }
+
+            transaction.onerror = () => {
+                reject(new Error('Error reading images from IndexedDB.'))
+            }
+
+            const cursorRequest = objectStore.openCursor()
+
+            cursorRequest.onerror = () => {
+                reject(new Error('Error opening cursor.'))
+            }
+
+            cursorRequest.onsuccess = (event) => {
+                const cursor = event.target.result
+                if (cursor) {
+                    images.push(cursor.value) // Assuming each image is stored as ArrayBuffer
+                    cursor.continue()
+                }
+            }
+        }
+
+        request.onupgradeneeded = () => {
+            // Handle database upgrade if needed
+        }
+    })
+}
+async function loadImageEditorFromIndexedDB() {
+    try {
+        const images = await getImagesFromIndexedDB()
+        if (images.length > 0) {
+            // Assuming the image is stored as ArrayBuffer in IndexedDB
+            const imageBlob = new Blob([images[0]], { type: 'image/png' })
+            const imageUrl = URL.createObjectURL(imageBlob)
+
+            // Load the image into the editor
+            imageEditor.value.loadImageFromURL(imageUrl, 'indexedDBImage')
+        } else {
+            console.log('No images found in IndexedDB.')
+        }
+    } catch (error) {
+        console.error('Error loading image from IndexedDB:', error)
+    }
+}
 onMounted(() => {
     const params = new URLSearchParams(document.location.search)
     const screencaptureObjectURL = params.get('screencapture')
+    const share = /\/share/.test(document.location.pathname)
 
     document.onpaste = function (event) {
         const items = (event.clipboardData || event.originalEvent.clipboardData).items
@@ -230,6 +291,9 @@ onMounted(() => {
             imageEditor.value.loadImageFromURL(dataURL, 'screenshot')
             tabId.value = params.get('tabId')
         })
+    }
+    if (share) {
+        loadImageEditorFromIndexedDB()
     }
     watch(() => screenCapture.value, screenCapture => {
         if (screencaptureObjectURL) return

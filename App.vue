@@ -3,8 +3,8 @@
         <v-main>
             <v-container class="h-100 d-flex justify-center align-center">
                 <ugh-install v-if="!screenCapture && /\/install/.test(route.path)" />
-                <ugh-splash v-else-if="!screenCapture" />
-                <ugh-main v-else-if="screenCapture" :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
+                <ugh-splash v-else-if="!screenCapture && !/\/share/.test(route.path)" />
+                <ugh-main :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
         </v-main>
     </v-app>
@@ -12,17 +12,20 @@
 <script setup>
 import { ref, onMounted, provide, getCurrentInstance } from "vue"
 import cookie from 'cookie'
+import { useAppStore } from "./src/store/app"
 
 import UghMain from "./src/components/UghMain.vue"
 import UghSplash from "./src/components/UghSplash.vue"
 import UghInstall from "./src/components/UghInstall.vue"
 
-const { VITE_APP_EXTENSION_ID } = import.meta.env
+const { MODE, VITE_APP_EXTENSION_ID } = import.meta.env
 const { $keycloak, $api } = getCurrentInstance().appContext.config.globalProperties
 const auth = ref()
 const screenCapture = ref()
 const extensionId = chrome?.runtime?.id || VITE_APP_EXTENSION_ID
 const route = ref({})
+const broadcast = ref()
+const store = useAppStore()
 
 async function doAuth(redirect) {
     await $keycloak.value.isLoaded
@@ -46,12 +49,23 @@ async function doAuth(redirect) {
         }
     }
 }
-const signin = () => $keycloak.value.login({ redirectUri: `${window.location.origin}?redirect=${route.value.params?.get('redirect')}` || window.location.origin })
-const signup = () => $keycloak.value.login({ redirectUri: `${window.location.origin}?redirect=${route.value.params?.get('redirect')}` || window.location.origin, action: 'register' })
+const signin = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || window.location.origin })
+const signup = () => $keycloak.value.login({ redirectUri: route.value.params?.get('redirect') || window.location.origin, action: 'register' })
+async function webShareInit() {
+    broadcast.value = new BroadcastChannel("messages")
+    broadcast.value.onmessage = async (event) => {
+        if (MODE !== "production") {
+            console.log(event)
+        } else if (typeof event.data === 'object' && event.data.image) {
+            store.shareData.images = event.data.images
+        }
+    }
+}
+webShareInit()
+doAuth()
 onMounted(() => {
     route.value.path = window.location.pathname
     route.value.params = new URLSearchParams(window.location.search)
-    const redirect = route.value.params?.get('redirect')
 
     if (/\/install/.test(route.value.path)) {
         doAuth()
@@ -61,8 +75,6 @@ onMounted(() => {
         signin()
     }
 })
-
-doAuth()
 
 provide('extensionId', extensionId)
 </script>

@@ -36,8 +36,9 @@ export default defineConfig({
                 enabled: true
             },
             manifest: {
-                "name": "Ugh",
-                "short_name": "Ugh",
+                "name": "ugh",
+                "short_name": "ugh",
+                "description": "The ability to \"downvote\", \"thumbs-down\", \"unlike\", or just plain \"hate\" everything.",
                 "icons": [
                     {
                         "src": "/android-chrome-512x512.webp",

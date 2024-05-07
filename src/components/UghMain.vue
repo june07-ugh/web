@@ -1,11 +1,11 @@
 <template>
     <v-container :style="styleObj">
         <v-card flat width="1080" class="mx-auto">
-            <v-card-title class="pb-0 text-center">Ugh<v-btn href="https://forum-ugh.june07.com" target="_blank" variant="text" size="small" icon="forum" /></v-card-title>
-            <v-card-subtitle class="text-center">If you must loathe, detest, and/or be revolted, use Ugh.</v-card-subtitle>
+            <v-card-title class="pb-0 text-center">UGh<v-btn href="https://forum-ugh.june07.com" target="_blank" variant="text" size="small" icon="forum" /></v-card-title>
+            <v-card-subtitle class="text-center">If you must loathe, detest, and/or be revolted, use UGh.</v-card-subtitle>
             <v-card-text>
                 <p class="d-flex mt-8 text-body-1">
-                <div>In the parlance of our times, Ugh. is the tool to "downvote", "thumbs-down", "unlike", or just plain "<span class="font-weight-bold">hate</span>" everything on the Internet.</div>
+                <div>In the parlance of our times, UGh. is the tool to "downvote", "thumbs-down", "unlike", or just plain "<span class="font-weight-bold">hate</span>" everything on the Internet.</div>
                 <v-spacer />
                 <social-share size="small" text="share it" variant="plain" color="blue" />
                 </p>
@@ -35,7 +35,7 @@
             </v-card-text>
             <v-card-actions class="d-flex justify-space-between align-center">
                 <div></div>
-                <v-btn @click="submitHandler" text="Ugh." class="text-body-1 px-8" flat rounded size="large">
+                <v-btn @click="submitHandler" text="UGh." class="text-body-1 px-8" flat rounded size="large">
                     <template v-slot:append>
                         <v-img src="/ugh.svg" width="32" height="32"></v-img>
                     </template>

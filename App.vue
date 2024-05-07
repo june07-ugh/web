@@ -4,7 +4,7 @@
             <v-container class="h-100 d-flex justify-center align-center">
                 <ugh-install v-if="!screenCapture && /\/install/.test(route.path)" />
                 <ugh-splash v-else-if="!screenCapture && !/\/share/.test(route.path)" />
-                <ugh-main :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
+                <ugh-main v-else :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
         </v-main>
     </v-app>

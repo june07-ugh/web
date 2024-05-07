@@ -1,8 +1,9 @@
 <template>
     <v-app>
         <v-main>
-            <v-container class="h-100 d-flex justify-center align-center">
-                <ugh-install v-if="!screenCapture && /\/install/.test(route.path)" />
+            <v-container class="h-100 d-flex justify-center">
+                <FAQ v-if="/\/faq/.test(route.path)" />
+                <ugh-install v-else-if="!screenCapture && /\/install/.test(route.path)" />
                 <ugh-splash v-else-if="!screenCapture && !/\/share/.test(route.path)" />
                 <ugh-main v-else :screenCapture="screenCapture" :auth="auth" @signin="signin" @signup="signup" />
             </v-container>
@@ -14,6 +15,7 @@ import { ref, onMounted, provide, getCurrentInstance } from "vue"
 import cookie from 'cookie'
 import { useAppStore } from "./src/store/app"
 
+import FAQ from "./src/components/FAQ.vue"
 import UghMain from "./src/components/UghMain.vue"
 import UghSplash from "./src/components/UghSplash.vue"
 import UghInstall from "./src/components/UghInstall.vue"

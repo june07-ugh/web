@@ -10,6 +10,8 @@ import pinia from '../store'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import api from './api.plugin'
 import keycloakPlugin from './keycloak.plugin'
+import ghostPlugin from './ghost.plugin'
+import clipboard from './clipboard.plugin'
 
 const {
     VITE_APP_KEYCLOAK_URL,
@@ -40,6 +42,8 @@ export function registerPlugins(app) {
         silentCheckSsoRedirectUri: !chrome?.runtime?.id ? `${location.origin}/silent-check-sso.html` : undefined
     })
         .use(pinia)
+        .use(ghostPlugin)
         .use(vuetify)
         .use(api)
+    app.provide('clipboard', clipboard)
 }

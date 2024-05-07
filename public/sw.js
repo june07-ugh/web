@@ -51,6 +51,19 @@ self.addEventListener('fetch', event => {
                     ${url ? `url=${encodeURIComponent(url)}` : ''}`, 303)
             })()
         )
+    } else if (event.request.method === 'GET') {
+        console.log(event.request)
+        // Handle GET request specifically
+        event.respondWith(
+            fetch(event.request.url, {
+                method: 'POST',
+                headers: { /* Add any necessary headers */ },
+                body: JSON.stringify({ /* Add any necessary data */ }),
+            })
+        )
+    } else {
+        console.log(event.request)
+        // Handle other HTTP methods as needed
     }
 })
 

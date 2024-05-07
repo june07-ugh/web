@@ -64,12 +64,12 @@ export default defineConfig({
                         "sizes": "1280x720",
                         "type": "image/jpeg",
                         "form_factor": "wide",
-                        "label": "tOptOp Desktop"
+                        "label": "UGh Desktop"
                     }, {
                         "src": "/screenshot-640x320.jpeg",
                         "sizes": "640x320",
                         "type": "image/jpeg",
-                        "label": "tOptOp Desktop (640x320)"
+                        "label": "UGh Desktop (640x320)"
                     }
                 ],
                 "theme_color": "#ffffff",

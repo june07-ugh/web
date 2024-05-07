@@ -73,7 +73,7 @@ export default defineConfig({
                 ],
                 "theme_color": "#ffffff",
                 "background_color": "#ffffff",
-                "start_url": NODE_ENV === 'production' ? "https://ugh.june07.com.com" : "https://dev-ugh.keycloak.june07.com",
+                "start_url": NODE_ENV === 'production' ? "https://ugh.june07.com" : "https://dev-ugh.keycloak.june07.com",
                 "display": "standalone",
                 "protocol_handlers": [
                     {

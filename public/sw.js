@@ -45,10 +45,10 @@ self.addEventListener('fetch', event => {
                         url = value
                     }
                 }
-                const redirectUrl = new URL(`/share/?
-                    ${title ? `title=${encodeURIComponent(title)}&` : ''}
-                    ${text ? `text=${encodeURIComponent(text)}&` : ''}
-                    ${url ? `url=${encodeURIComponent(url)}&` : ''}`)
+                const redirectUrl = new URL(`/share/?` +
+                    `${title ? `title=${encodeURIComponent(title)}&` : ''}` +
+                    `${text ? `text=${encodeURIComponent(text)}&` : ''}` +
+                    `${url ? `url=${encodeURIComponent(url)}&` : ''}`)
                 const redirectResponse = new Response(redirectUrl.href, { status: 303, headers: { 'Location': redirectUrl.href } })
                 console.log(redirectUrl)
                 return redirectResponse

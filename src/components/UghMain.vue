@@ -1,17 +1,15 @@
 <template>
-    <v-container :style="styleObj">
-        <v-card flat width="1080" class="mx-auto">
+    <v-container :style="styleObj" :class="smAndDown ? 'pa-0' : ''">
+        <v-card flat :width="smAndDown ? '100%' : 1080" class="mx-auto">
             <v-card-title class="pb-0 text-center">UGh<v-btn href="https://forum-ugh.june07.com" target="_blank" variant="text" size="small" icon="forum" /></v-card-title>
             <v-card-subtitle class="text-center">If you must loathe, detest, and/or be revolted, use UGh.</v-card-subtitle>
             <v-card-text>
-                <p class="d-flex mt-8 text-body-1">
+                <p class="d-flex" :class="smAndDown ? 'text-body-2' : 'text-body-1 my-8'">
                 <div>In the parlance of our times, UGh. is the tool to "downvote", "thumbs-down", "unlike", or just plain "<span class="font-weight-bold">hate</span>" everything on the Internet.</div>
-                <v-spacer />
-                <social-share size="small" text="share it" variant="plain" color="blue" />
+                <v-spacer v-if="!smAndDown" />
+                <social-share v-if="!smAndDown" size="small" text="share it" variant="plain" color="blue" />
                 </p>
-                <p class="font-weight-thin text-caption ml-16 mt-0 mb-8">
-                    *(<span class="font-weight-bold">u</span>ser <span class="font-weight-bold">g</span>enerated <span class="font-weight-bold">h</span>ate... yes, a strong word, but sometimes hate is good.)
-                </p>
+
                 <v-form ref="formRef">
                     <v-field active class="pa-4" variant="outlined" style="border-radius: 24px">
                         <div :style="styleObj" id="tui-image-editor"></div>
@@ -33,15 +31,12 @@
                 </v-form>
                 <div v-if="props.auth?.preferred_username" class="text-caption font-weight-light mt-n4 text-center">signed in as <span class="font-weight-bold">{{ props.auth.preferred_username }}</span></div>
             </v-card-text>
-            <v-card-actions class="d-flex justify-space-between align-center">
-                <div></div>
+            <v-card-actions class="d-flex justify-center align-center">
                 <v-btn @click="submitHandler" text="UGh." class="text-body-1 px-8" flat rounded size="large">
                     <template v-slot:append>
                         <v-img src="/ugh.svg" width="32" height="32"></v-img>
                     </template>
                 </v-btn>
-                <v-btn class="text-body-1" v-if="!props.auth?.token" @click="$emit('signin')" text="sign in" variant="plain" rounded />
-                <div v-else></div>
             </v-card-actions>
         </v-card>
     </v-container>

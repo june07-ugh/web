@@ -1,5 +1,11 @@
 <template>
     <v-app>
+        <div class="d-flex justify-center mt-8">
+            <v-btn v-if="!/\/$/.test(route.path)" href="/" variant="text" size="small" prepend-icon="home" text="home" />
+            <v-btn href="https://forum-ugh.june07.com" target="_blank" variant="text" size="small" prepend-icon="forum" text="forum" />
+            <v-btn v-if="!/\/faq/.test(route.path)" href="/faq" variant="text" size="small" prepend-icon="help" text="faq" />
+            <v-btn v-if="!auth?.token" @click="signin" text="sign in" variant="plain"  size="small" prepend-icon="login" />
+        </div>
         <v-main>
             <v-container class="h-100 d-flex justify-center">
                 <FAQ v-if="/\/faq/.test(route.path)" />
@@ -24,6 +30,11 @@
         </v-snackbar>
     </v-app>
 </template>
+<style scoped>
+:deep() .v-icon {
+    color: #fbc02d !important;
+}
+</style>
 <script setup>
 import { ref, onMounted, provide, getCurrentInstance } from "vue"
 import cookie from 'cookie'

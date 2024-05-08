@@ -61,13 +61,13 @@ self.addEventListener('fetch', event => {
 })
 
 async function storeImage(imageArrayBuffer) {
-    const tx = iDb.transaction('ughDb', 'readwrite')
+    const tx = iDb.transaction('images', 'readwrite')
     const store = tx.objectStore('images')
     await store.add(imageArrayBuffer)
     await tx.complete
 }
 async function getImages() {
-    const tx = iDb.transaction('ughDb', 'readonly')
+    const tx = iDb.transaction('images', 'readonly')
     const store = tx.objectStore('images')
     const images = []
 

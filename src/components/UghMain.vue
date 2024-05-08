@@ -261,7 +261,7 @@ onMounted(() => {
     imageEditor.value = new ImageEditor(document.querySelector('#tui-image-editor'), {
         includeUI: {
             loadImage: {
-                path: '/dist/ugh.webp',
+                path: '/ugh.webp',
                 name: 'SampleImage',
             }
         },

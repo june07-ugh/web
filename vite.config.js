@@ -31,6 +31,10 @@ export default defineConfig({
             algorithm: 'brotliCompress'
         }),
         VitePWA({
+            strategies: 'injectManifest',
+            injectManifest: {
+                injectionPoint: undefined
+            },
             registerType: 'autoUpdate',
             devOptions: {
                 enabled: true
@@ -133,7 +137,7 @@ export default defineConfig({
             plugins: [
                 terser({
                     compress: {
-                        drop_console: true,
+                        // drop_console: true,
                         drop_debugger: true,
                     },
                     mangle: true,

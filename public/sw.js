@@ -45,10 +45,10 @@ self.addEventListener('fetch', event => {
                         url = value
                     }
                 }
-                return Response.redirect(`/?
-                    ${text ? `text=${text}` : ''}
-                    ${title ? `title=${title}` : ''}
-                    ${url ? `url=${encodeURIComponent(url)}` : ''}`, 303)
+                const redirectUrl = new URL(`/#share&title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, self.location.origin)
+                const redirectResponse = new Response(redirectUrl.href, { status: 303, headers: { 'Location': redirectUrl.href } })
+                console.log(redirectUrl)
+                return redirectResponse
             })()
         )
     } else if (event.request.method === 'GET') {

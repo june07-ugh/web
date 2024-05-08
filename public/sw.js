@@ -45,7 +45,7 @@ self.addEventListener('fetch', event => {
                         url = value
                     }
                 }
-                const redirectUrl = new URL(`/share/?` +
+                const redirectUrl = new URL(`${location.origin}/share/?` +
                     `${title ? `title=${encodeURIComponent(title)}&` : ''}` +
                     `${text ? `text=${encodeURIComponent(text)}&` : ''}` +
                     `${url ? `url=${encodeURIComponent(url)}&` : ''}`)

@@ -50,7 +50,7 @@ self.addEventListener('fetch', event => {
                     `${text ? `text=${encodeURIComponent(text)}&` : ''}` +
                     `${url ? `url=${encodeURIComponent(url)}&` : ''}`)
                 const redirectResponse = new Response(redirectUrl.href, { status: 303, headers: { 'Location': redirectUrl.href } })
-                console.log(redirectUrl)
+                // console.log(redirectUrl)
                 return redirectResponse
             })()
         )
@@ -63,6 +63,8 @@ self.addEventListener('fetch', event => {
 async function storeImage(imageArrayBuffer) {
     const tx = iDb.transaction('images', 'readwrite')
     const store = tx.objectStore('images')
+    // for now we only store the last image
+    await store.clear()
     await store.add(imageArrayBuffer)
     await tx.complete
 }
@@ -89,4 +91,4 @@ async function getImages() {
     })
 }
 
-console.log('Worker started... yaya!')
+// console.log('Worker started... yaya!')

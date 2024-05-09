@@ -12,7 +12,7 @@
 
                 <v-form ref="formRef">
                     <v-field active class="pa-4" variant="outlined" style="border-radius: 24px">
-                        <div :style="styleObj" id="tui-image-editor"></div>
+                        <div :style="styleObj" id="tui-image-editor" :class="smAndDown ? 'mobile' : ''"></div>
                         <template v-slot:label>
                             <div class="text-h5 text-red-darken-4">What?</div>
                         </template>
@@ -42,15 +42,25 @@
     </v-container>
 </template>
 <style scoped>
-:deep() .tui-image-editor-header-logo,
-:deep() .tui-image-editor-header-buttons {
+:deep() .tui-image-editor-header-logo {
     display: none;
 }
-
+:deep() .mobile .tui-image-editor-help-menu.top {
+    display: none;
+}
+:deep() .mobile .tui-image-editor-header-buttons {
+    float: none !important;
+}
+:deep() .mobile .tui-image-editor-download-btn {
+    display: none;
+}
 #tui-image-editor {
     border-radius: 24px;
 }
-
+:deep() .mobile .tui-image-editor-item {
+    margin: 0 !important;  
+    padding: 0 !important;  
+}
 :deep() .v-field__outline__start {
     flex: 0 0 29px !important;
 }
@@ -70,8 +80,8 @@ const dropzone = ref()
 const { $api } = getCurrentInstance().appContext.config.globalProperties
 const { smAndDown } = useDisplay()
 const styleObj = computed(() => ({
-    maxWidth: smAndDown ? '100%' : '1080px',
-    minWidth: smAndDown ? '100%' : '720px',
+    maxWidth: smAndDown.value ? '100%' : '1080px',
+    minWidth: smAndDown.value ? '100%' : '720px',
     height: `${props.screenCapture?.height + 150 || 500}px`,
     width: `${props.screenCapture?.width + 100 || 1080}px`,
 }))
@@ -223,6 +233,7 @@ async function getImagesFromIndexedDB() {
 }
 async function loadImageEditorFromIndexedDB() {
     try {
+        console.log('Loading image from IndexedDB...')
         const images = await getImagesFromIndexedDB()
         if (images.length > 0) {
             // Assuming the image is stored as ArrayBuffer in IndexedDB

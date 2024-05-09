@@ -37,6 +37,7 @@ self.addEventListener('fetch', event => {
                     if (value instanceof File && value.type.startsWith('image/')) {
                         const imageArrayBuffer = await value.arrayBuffer()
                         await storeImage(imageArrayBuffer)
+                        console.log('stored image')
                     } else if (key === 'text') {
                         text = value
                     } else if (key === 'title') {
@@ -50,7 +51,7 @@ self.addEventListener('fetch', event => {
                     `${text ? `text=${encodeURIComponent(text)}&` : ''}` +
                     `${url ? `url=${encodeURIComponent(url)}&` : ''}`)
                 const redirectResponse = new Response(redirectUrl.href, { status: 303, headers: { 'Location': redirectUrl.href } })
-                // console.log(redirectUrl)
+                console.log(redirectUrl)
                 return redirectResponse
             })()
         )

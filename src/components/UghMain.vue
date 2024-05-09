@@ -51,7 +51,7 @@
 :deep() .mobile .tui-image-editor-header-buttons {
     float: none !important;
 }
-:deep() .mobile .tui-image-editor-download-btn {
+:deep() .tui-image-editor-download-btn {
     display: none;
 }
 #tui-image-editor {
